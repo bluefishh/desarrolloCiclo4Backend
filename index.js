@@ -16,9 +16,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// 1) Metodo HTTP (verbos HTTP)
-// 2) RUTA (VIrtual)
-// 3) EL ALGORITMO QUE YO PROGRAMO PARA RESPONDER ESA PETICION
 
 console.log("Configurando Routers...");
 const clientesRouter = require("./routes/routerClientes");
