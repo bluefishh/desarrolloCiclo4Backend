@@ -1,6 +1,8 @@
 console.log("Cargando configuracion...");
 //Importar las dependencias
 const express = require("express");
+var bodyParser = require("body-parser");
+let cors = require("cors");
 
 //Cargar configuracion app WEB
 const appConfig = require("./config");
@@ -10,6 +12,10 @@ console.log("Inicializar la Aplicacion WEB...");
 require("./db/dbInitializer");
 const app = express();
 
+// Middlewares
+app.use(bodyParser.json());
+app.use(cors());
+
 // 1) Metodo HTTP (verbos HTTP)
 // 2) RUTA (VIrtual)
 // 3) EL ALGORITMO QUE YO PROGRAMO PARA RESPONDER ESA PETICION
@@ -17,19 +23,13 @@ const app = express();
 console.log("Configurando Routers...");
 const clientesRouter = require("./routes/routerClientes");
 const productosRouter = require("./routes/routerProductos");
+const deudasRouter = require("./routes/routerDeudas");
 
 //Configuracion de ROUTERS
 
 app.use("/api/clientes", clientesRouter);
 app.use("/api/productos", productosRouter);
-
-app.get(
-    "/",
-
-    function (req, res) {
-        res.send("Hello World!");
-    }
-);
+app.use("/api/deudas", deudasRouter);
 
 console.log("Iniciando Servidor");
 
