@@ -9,6 +9,13 @@ router.post("/create", async function (req, res) {
     res.json(result);
 });
 
+router.put("/update/:idDeuda", async function (req, res) {
+    let idDeuda = req.params.idDeuda;
+    let updateDeuda = req.body;
+    let result = await deudaSchema.updateDeuda(idDeuda, updateDeuda);
+    res.json(result);
+});
+
 router.get("/get/:idDeuda", async function (req, res) {
     let idDeuda = req.params.idDeuda;
     let result = await deudaSchema.getDeudaById(idDeuda);
@@ -22,7 +29,7 @@ router.get("/all", async function (req, res) {
 
 router.delete("/delete/:idDeuda", async function (req, res) {
     let idDeuda = req.params.idDeuda;
-    let result = await clienteSchema.deleteDeuda(idDeuda);
+    let result = await deudaSchema.deleteDeuda(idDeuda);
     res.json(result);
 });
 

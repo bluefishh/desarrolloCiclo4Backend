@@ -3,6 +3,19 @@ const router = express.Router();
 
 let productoSchema = require("../db/schemas/productoSchema");
 
+router.post("/create", async function (req, res) {
+    let newProducto = req.body;
+    let result = await productoSchema.createProducto(newProducto);
+    res.json(result);
+});
+
+router.put("/update/:idProducto", async function (req, res) {
+    let idProducto = req.params.idProducto;
+    let updateProducto = req.body;
+    let result = await productoSchema.updateProducto(idProducto, updateProducto);
+    res.json(result);
+});
+
 router.get("/get/:idProducto", async function (req, res) {
     let idProducto = req.params.idProducto;
     let result = await productoSchema.getProductoById(idProducto);

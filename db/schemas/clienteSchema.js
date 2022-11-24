@@ -1,4 +1,4 @@
-let mongoose = require('mongoose');
+let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
 let schemaConfig = {
@@ -6,7 +6,7 @@ let schemaConfig = {
     lastName: String,
     email: String,
     phone: String,
-}
+};
 
 const clienteSchema = new Schema(schemaConfig);
 
@@ -27,6 +27,21 @@ async function createCliente(cliente) {
     }
 }
 
+async function updateCliente(id, cliente) {
+    try {
+        let result = await ClienteModel.findByIdAndUpdate(id, {
+            firstName: cliente.firstName,
+            lastName: cliente.lastName,
+            email: cliente.email,
+            phone: cliente.phone,
+        });
+        return result;
+    } catch (ex) {
+        console.log(ex);
+        return {};
+    }
+}
+
 async function deleteCliente(id) {
     try {
         let result = await ClienteModel.findByIdAndRemove(id).exec();
@@ -40,7 +55,7 @@ async function deleteCliente(id) {
 async function getAllClientes() {
     try {
         let filter = {};
-        let cursor = ClienteModel.find(filter).cursor();
+        let cursor = ClienteModel.find(filter);
         let result = [];
         let currentCliente = await cursor.next();
         while (currentCliente != null) {
@@ -67,8 +82,9 @@ async function getClienteById(id) {
 
 module.exports = {
     clienteSchema,
+    updateCliente,
     createCliente,
     deleteCliente,
     getAllClientes,
     getClienteById,
-}
+};

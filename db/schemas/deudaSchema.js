@@ -32,6 +32,20 @@ async function createDeuda(deuda) {
     }
 }
 
+async function updateDeuda(id, deuda) {
+    try {
+        let result = await DeudaModel.findByIdAndUpdate(id, {
+            cliente: deuda.cliente,
+            productos: deuda.productos,
+            precioTotal: deuda.precioTotal,
+        });
+        return result;
+    } catch (ex) {
+        console.log(ex);
+        return {};
+    }
+}
+
 async function deleteDeuda(id) {
     try {
         let result = await DeudaModel.findByIdAndRemove(id).exec();
@@ -43,17 +57,17 @@ async function deleteDeuda(id) {
 }
 
 async function getAllDeudas() {
-    let populateCliente = { 
-        path: 'clientes', 
-        select: 'firstName lastName'
-    }
-    let populateProducto = { 
-        path: 'productos', 
-        select: 'title'
-    }
     try {
         let filter = {};
-        let cursor = DeudaModel.find(filter).populate(populateCliente).populate(populateProducto).cursor().exec();
+        let cursor = DeudaModel.find(filter)
+            .populate("cliente", {
+                firstName: 1,
+                lastName: 1,
+            })
+            .populate("productos", {
+                title: 1,
+            })
+            .cursor();
         let result = [];
         let currentDeuda = await cursor.next();
         while (currentDeuda != null) {
@@ -69,7 +83,15 @@ async function getAllDeudas() {
 
 async function getDeudaById(id) {
     try {
-        let cursor = DeudaModel.findById(id).cursor();
+        let cursor = DeudaModel.findById(id)
+            .populate("cliente", {
+                firstName: 1,
+                lastName: 1,
+            })
+            .populate("productos", {
+                title: 1,
+            })
+            .cursor();
         let user = await cursor.next();
         return user;
     } catch (ex) {
@@ -81,6 +103,7 @@ async function getDeudaById(id) {
 module.exports = {
     deudaSchema,
     createDeuda,
+    updateDeuda,
     deleteDeuda,
     getAllDeudas,
     getDeudaById,

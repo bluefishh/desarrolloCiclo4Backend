@@ -25,6 +25,20 @@ async function createProducto(producto) {
     }
 }
 
+async function updateProducto(id, producto) {
+    try {
+        let result = await ProductoModel.findByIdAndUpdate(id, {
+            title: producto.title,
+            description: producto.description,
+            price: producto.price,
+        });
+        return result;
+    } catch (ex) {
+        console.log(ex);
+        return {};
+    }
+}
+
 async function deleteProducto(id) {
     try {
         let result = await ProductoModel.findByIdAndRemove(id).exec();
@@ -66,6 +80,7 @@ async function getProductoById(id) {
 module.exports = {
     productoSchema,
     createProducto,
+    updateProducto,
     deleteProducto,
     getAllProductos,
     getProductoById,
